@@ -5,12 +5,13 @@ require 'db'
 describe ThingStore do
   before do
     DB.conn.query('TRUNCATE things')
+    @store = ThingStore.new(DB.conn)
   end
 
   describe '#create' do
     it 'inserts a thing into the database' do
       thing = Thing.new(name: 'some thing')
-      ThingStore.new.create(thing)
+      @store.create(thing)
       res = DB.conn.query("SELECT '#{thing.id}' FROM things")
       assert_equal res.count, 1
     end
@@ -22,8 +23,8 @@ describe ThingStore do
         id: '111111111111',
         name: 'some other thing',
       )
-      ThingStore.new.create(thing)
-      out = ThingStore.new.get(thing.id)
+      @store.create(thing)
+      out = @store.get(thing.id)
       assert_equal(
         [out.id, out.name],
         ['111111111111', 'some other thing']
@@ -38,8 +39,8 @@ describe ThingStore do
         Thing.new(id: '111111111111', name: 'some other thing'),
         Thing.new(id: '222222222222', name: 'some thing')
       ]
-      things.each { |x| ThingStore.new.create(x) }
-      list = ThingStore.new.list
+      things.each { |x| @store.create(x) }
+      list = @store.list
       assert_equal(
         list.map { |x| [x.id, x.name] },
         [

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+tests=$(find tests -name '*_spec.rb')
+for testfile in $tests; do
+  bundle exec ruby -Ilib:./lib "$testfile"
+done

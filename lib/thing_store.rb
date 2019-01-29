@@ -1,9 +1,9 @@
-require_relative 'db'
-require_relative 'thing'
+require 'db'
+require 'thing'
 
 class ThingStore
-  def initialize
-    @conn = DB.conn
+  def initialize(conn)
+    @conn = conn
   end
 
   private def record_to_model(record)

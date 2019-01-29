@@ -1,6 +1,6 @@
 require 'json'
 require 'sinatra'
-require_relative 'thing_store'
+require 'thing_store'
 
 class ThingPresenter
   attr_reader :thing
@@ -24,7 +24,7 @@ end
 
 class App < Sinatra::Base
   configure do
-    set :thing_store, ThingStore.new
+    set :thing_store, ThingStore.new(DB.conn)
   end
 
   get '/' do
